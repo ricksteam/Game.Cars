@@ -8,11 +8,10 @@ public class missingParts : MonoBehaviour
     public Transform[] parts;
     public Text scoreText;
     public Text timerText;
-
     IDHolder currentID;
     GameObject temp;
     new AudioSource audio;
-
+    
     public float timeCounter;
 
     bool counting;
@@ -21,6 +20,8 @@ public class missingParts : MonoBehaviour
     int points;
     int pointCounter;
     int extraPoints;
+
+
     
     // Use this for initialization
     void Start()
@@ -42,6 +43,8 @@ public class missingParts : MonoBehaviour
         audio.playOnAwake = false;
         audio.volume = .5f;
         audio.clip = Resources.Load("Audio/Completed") as AudioClip;
+
+
     }
 
     public void checkParts()
@@ -105,9 +108,9 @@ public class missingParts : MonoBehaviour
         StartCoroutine(timer());
     }
 
-    void assemblyCompleted()
+    public static void assemblyCompleted()
     {
-
+        
     }
 
     IEnumerator timer()

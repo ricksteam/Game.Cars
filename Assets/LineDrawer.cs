@@ -1,7 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using VRTK.Examples;
 
 public class LineDrawer : MonoBehaviour {
 
@@ -12,11 +14,18 @@ public class LineDrawer : MonoBehaviour {
     public GameObject[] items;
     int counter;
     Vector3[] positions;
+    public int[] indexes = {0, 1, 2, 3, 4, 5};
+
 
 	// Use this for initialization
 	void Start ()
     {
-        counter = 0;
+        ready = false;
+        Random.seed = System.DateTime.Now.Millisecond;
+        counter = getRandomPart();
+        items[counter].GetComponent<Custom_InteractableGrab>().enabled = true;
+
+        Debug.Log(counter);
         positions = new Vector3[2];
         line = GetComponent<LineRenderer>();
 	}
@@ -48,7 +57,14 @@ public class LineDrawer : MonoBehaviour {
 
         if(items[counter] == null)
         {
-            counter++;
+            if (indexes.Length > 0)
+            {
+                counter = getRandomPart();
+                items[counter].GetComponent<Custom_InteractableGrab>().enabled = true;
+            }
+                
+       
+                
         }
         positions[0] = transform.position;
         try
@@ -58,6 +74,8 @@ public class LineDrawer : MonoBehaviour {
         catch
         {
             textDistance.text = "Good Job!\n You are Done!";
+            StartCoroutine(TeleportToMenu());
+            
             return;
         }
         CanvasText.position = new Vector3(positions[0].x, positions[0].y + .1f, positions[0].z) ;
@@ -73,4 +91,26 @@ public class LineDrawer : MonoBehaviour {
         line.SetPositions(positions);
     }
 
+    IEnumerator TeleportToMenu()
+    {
+        yield return new WaitForSeconds(2);
+        LineDrawer.ready = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public int getRandomPart()
+    {
+        int r = indexes[Random.Range(0, indexes.Length)];
+        List<int> temp = new List<int>();
+
+        foreach(int i in indexes)
+        {
+           if (i != r)
+           {
+                temp.Add(i);
+           }
+        }
+        indexes = temp.ToArray();
+        return r;
+    }
 }

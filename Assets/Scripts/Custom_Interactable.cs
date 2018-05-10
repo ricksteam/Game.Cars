@@ -3,6 +3,7 @@
     using System.Collections;
     using System.Collections.Generic;
     using UnityEngine;
+    using UnityEditor;
     using UnityEngine.UI;
 
     public class Custom_Interactable : VRTK_InteractableObject
@@ -10,7 +11,7 @@
         new AudioSource audio;
         public Transform PlayRoom;
         public Text messageTxt;
-
+        public Text messageTxt2;
         public float timer;
        // public Transform playArea;
         public VRTK_BasicTeleport teleport;
@@ -32,11 +33,29 @@
             {
                 audio.Play();
             }
-            messageTxt.text = "Teleporting to the game room! Please wait!";
-            if(teleporting == false)
+
+            string btn = sender.ToString().Split(' ')[0];
+            Debug.Log(btn);
+            switch (btn)
             {
-                StartCoroutine(teleportOverTime());
+                case "ButtonPlay":
+                    messageTxt.text = "Teleporting to the game room! Please wait!";
+                    if (teleporting == false)
+                    {
+                        StartCoroutine(teleportOverTime());
+                    }
+                    break;
+                case "ButtonExit":
+                    
+                    if (teleporting == false)
+                    {
+                        messageTxt2.text = "Exiting Game!";
+                        StartCoroutine(exitOverTime());
+                    }
+
+                    break;
             }
+            
         }
 
         IEnumerator teleportOverTime()
@@ -47,6 +66,15 @@
             messageTxt.text = "Touch to play";
             teleporting = false;
             LineDrawer.ready = true;
+        }
+
+        IEnumerator exitOverTime()
+        {
+            yield return new WaitForSeconds(timer);
+            messageTxt2.text = "EXIT";
+            UnityEditor.EditorApplication.isPlaying = false;
+            Application.Quit();
+
         }
     }
 }    
