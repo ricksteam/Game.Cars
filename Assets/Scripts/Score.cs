@@ -11,9 +11,11 @@ public class Score : MonoBehaviour {
     public int wins;
     public int losses;
 
+    [SerializeField]
+    private bool debugMode = true;
     
 
-    public GameObject ds;
+   //public DisplayScore ds;
     
     void Start()
     {
@@ -29,10 +31,13 @@ public class Score : MonoBehaviour {
     void Update()
     {
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && debugMode == true)
         {
             PlayerPrefs.SetFloat("bestTime", 0.0f);
-
+            PlayerPrefs.SetInt("CompletedOne", 0);
+            PlayerPrefs.SetInt("CompletedTwo", 0);
+            PlayerPrefs.SetInt("CompletedThree", 0);
+            GameObject.Find("Achievements").GetComponent<Achievements>().updateText();
             Load();
         }
     }
@@ -72,8 +77,8 @@ public class Score : MonoBehaviour {
         {
             this.time = 0;
         }
+
         
-     
         //Debug.Log(achievements.gameObject.name); 
         bestTime.text = "Best time: " + this.time.ToString("f2");
     }

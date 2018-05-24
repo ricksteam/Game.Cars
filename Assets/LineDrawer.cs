@@ -14,16 +14,22 @@ public class LineDrawer : MonoBehaviour {
     public GameObject[] items;
     int counter;
     Vector3[] positions;
+    GameObject scoreGo;
+
     Score score;
     Timer timer;
+    Achievements a;
     public int[] indexes = {0, 1, 2, 3, 4, 5};
 
 
 	// Use this for initialization
 	void Start ()
     {
-        score = GameObject.Find("Score").GetComponent<Score>();
+        scoreGo = GameObject.Find("Score");
+        score = scoreGo.GetComponent<Score>();
         timer = GameObject.Find("Timer").GetComponent<Timer>();
+        a = GameObject.Find("Achievements").GetComponent<Achievements>();
+
         ready = false;
         Random.seed = System.DateTime.Now.Millisecond;
         counter = getRandomPart();
@@ -81,6 +87,9 @@ public class LineDrawer : MonoBehaviour {
             timer.startCountDown = false;
             score.time = timer.time;
             score.Save();
+            a.checkAllAchievements(timer.time);
+           
+            
 
             Debug.Log(timer.time);
             //GameObject.Find("ConsoleCanvas").GetComponent<DisplayScore>().updateText(GameObject.Find("Timer").GetComponent<Timer>().time);
