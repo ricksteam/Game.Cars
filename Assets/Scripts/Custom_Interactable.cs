@@ -62,6 +62,7 @@
         {        
             teleporting = true;
             yield return new WaitForSeconds(timer);
+            GameObject.Find("Timer").GetComponent<Timer>().startCountDown = true;
             teleport.ForceTeleport(PlayRoom.position, PlayRoom.rotation);
             messageTxt.text = "Touch to play";
             teleporting = false;
