@@ -47,7 +47,7 @@ public class Achievements : MonoBehaviour
     }
 
 
-    void checkCompleted()
+    public void checkCompleted()
     {
         int all = 0;
         for (int i = 0; i < achievementList.Length; i++)
@@ -132,11 +132,11 @@ public class Achievements : MonoBehaviour
             Debug.Log("COMPLETED: " + completed[i]);
             if (completed[i] == 0)
             {
-                txt.text += s + "\n";
+                txt.text += "• " + s + "\n";
             }
             else
             {
-                txt.text += StrikeThrough(s) + "\n";
+                txt.text += "• " + StrikeThrough(s) + "\n";
             }
 
         }
