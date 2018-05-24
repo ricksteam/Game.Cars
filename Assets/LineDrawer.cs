@@ -14,12 +14,16 @@ public class LineDrawer : MonoBehaviour {
     public GameObject[] items;
     int counter;
     Vector3[] positions;
+    Score score;
+    Timer timer;
     public int[] indexes = {0, 1, 2, 3, 4, 5};
 
 
 	// Use this for initialization
 	void Start ()
     {
+        score = GameObject.Find("Score").GetComponent<Score>();
+        timer = GameObject.Find("Timer").GetComponent<Timer>();
         ready = false;
         Random.seed = System.DateTime.Now.Millisecond;
         counter = getRandomPart();
@@ -74,6 +78,12 @@ public class LineDrawer : MonoBehaviour {
         catch
         {
             textDistance.text = "Good Job!\n You are Done!";
+            timer.startCountDown = false;
+            score.time = timer.time;
+            score.Save();
+
+            Debug.Log(timer.time);
+            //GameObject.Find("ConsoleCanvas").GetComponent<DisplayScore>().updateText(GameObject.Find("Timer").GetComponent<Timer>().time);
             StartCoroutine(TeleportToMenu());
             
             return;
@@ -94,6 +104,7 @@ public class LineDrawer : MonoBehaviour {
     IEnumerator TeleportToMenu()
     {
         yield return new WaitForSeconds(2);
+
         LineDrawer.ready = false;
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
